@@ -1,60 +1,64 @@
 const express = require("express");
 const router = express.Router();
-const faker = require("faker");
+const CharactersService = require("../services/characters.service");
+const validatorHandler = require("../middlewares/validator.handler");
+const {
+  createCharacterSchema,
+  updateCharacterSchema,
+  getCharacterSchema,
+} = require("../schemas/character.schema");
 
-// GET ALL CHARACTERS
-router.get("/", (req, res) => {
-  const characters = [];
-  const { size } = req.query;
-  const limit = size || 20;
-  for (let i = 0; i < limit; i++) {
-    characters.push({
-      image: faker.image.image(),
-      name: faker.name.findName()
-    });
-  }
+const serviceCharacters = new CharactersService();
+
+router.get("/", async (req, res) => {
+  const characters = await serviceCharacters.find();
   res.json(characters);
 });
 
-// GET CHARACTER DETAIL
-router.get("/:id", (req, res) => {
-  res.send("Characters for id");
-});
+router.get(
+  "/:id",
+  validatorHandler(getCharacterSchema, "params"),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const character = await serviceCharacters.findOne(id);
+      res.json(character);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
+router.post(
+  "/",
+  validatorHandler(createCharacterSchema, "body"),
+  async (req, res) => {
+    const body = req.body;
+    const newCharacter = await serviceCharacters.create(body);
+    res.status(201).json(newCharacter);
+  }
+);
 
-// SEARCH CHARACTER FOR NAME, AGE, MOVIES
+router.patch(
+  "/:id",
+  validatorHandler(updateCharacterSchema, "params"),
+  validatorHandler(updateCharacterSchema, "body"),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const body = req.body;
+      const character = await serviceCharacters.update(id, body);
+      res.json(character);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
-
-// CREATE CHARACTER
-router.post("/", (req, res) => {
-  const body = req.body;
-  res.status(201).json({
-    message: "Character created",
-    data: body,
-  });
-});
-
-// UPDATE CHARACTER
-
-// UPDATE PARTIAL CHARACTER
-router.patch("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
   const { id } = req.params;
-  const body = req.body;
-  res.json({
-    message: "Update partial",
-    data: body,
-    id,
-  });
+  const character = await serviceCharacters.delete(id);
+  res.json(character);
 });
-
-// DELETE CHARACTER
-router.delete("/:id", (req, res) => {
-    const { id } = req.params;
-    res.json({
-      message: "Delete Character",
-      id,
-    });
-  });
-
 
 module.exports = router;
