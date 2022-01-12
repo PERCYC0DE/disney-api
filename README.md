@@ -1,3 +1,3 @@
 # DESCRIPTION
 
-Project developed for Alkemy
+API for personal project

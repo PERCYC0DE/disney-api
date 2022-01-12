@@ -4,6 +4,8 @@
 .AppleDouble
 .LSOverride
 
+postgres_data
+database
 # Icon must end with two \r
 Icon
 

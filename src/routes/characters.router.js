@@ -11,8 +11,12 @@ const {
 const serviceCharacters = new CharactersService();
 
 router.get("/", async (req, res) => {
-  const characters = await serviceCharacters.find();
-  res.json(characters);
+  try {
+    const characters = await serviceCharacters.find();
+    res.json(characters);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 router.get(
@@ -59,6 +63,10 @@ router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   const character = await serviceCharacters.delete(id);
   res.json(character);
+});
+
+router.get("/search", (req, res) => {
+  res.send("Searching character...");
 });
 
 module.exports = router;

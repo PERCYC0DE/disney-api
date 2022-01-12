@@ -1,11 +1,16 @@
 const faker = require("faker");
 const boom = require("@hapi/boom");
 
+// const getConnection = require("../libs/postgres");
+// const pool = require("../libs/postgres.pool");
+const { models } = require("../libs/sequelize");
 
 class CharactersService {
   constructor() {
     this.characters = [];
     this.generate();
+    // this.pool = pool;
+    // this.pool.on("error", (err) => console.log(err));
   }
 
   generate() {
@@ -29,7 +34,13 @@ class CharactersService {
   }
 
   async find() {
-    return this.characters;
+    // const client = await getConnection();
+    // const response = await client.query("SELECT * FROM characters");
+    // return response.rows;
+    // const query = "SELECT * FROM characters";
+    const characters = await models.Character.findAll();
+    // const [data] = await sequelize.query(query);
+    return characters;
   }
 
   async findOne(id) {

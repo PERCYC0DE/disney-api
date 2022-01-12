@@ -3,14 +3,13 @@ const app = express();
 const routerApi = require("./src/routes");
 const cors = require("cors");
 const port = process.env.PORT || 3000;
+
+// Middlewares Custom
 const {
   logErrors,
   errorHandler,
   boomErrorHandler,
 } = require("./src/middlewares/error.handler");
-const e = require("express");
-
-// Middleware JSON
 app.use(express.json());
 
 // CORS
@@ -29,7 +28,7 @@ app.use(cors());
 // Define routing
 routerApi(app);
 
-// Middleware
+// Middleware Handler Error
 app.use(logErrors);
 app.use(boomErrorHandler);
 app.use(errorHandler);
