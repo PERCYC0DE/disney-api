@@ -4,7 +4,7 @@ const routerApi = require("./src/routes");
 const cors = require("cors");
 const port = process.env.PORT || 3000;
 
-// Middlewares Custom
+// Custom Middlewares
 const {
   logErrors,
   errorHandler,

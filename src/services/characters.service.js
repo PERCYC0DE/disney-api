@@ -1,4 +1,3 @@
-const faker = require("faker");
 const boom = require("@hapi/boom");
 
 // const getConnection = require("../libs/postgres");
@@ -8,28 +7,18 @@ const { models } = require("../libs/sequelize");
 class CharactersService {
   constructor() {
     this.characters = [];
-    this.generate();
+    // this.generate();
     // this.pool = pool;
     // this.pool.on("error", (err) => console.log(err));
   }
 
-  generate() {
-    const limit = 50;
-    for (let i = 0; i < limit; i++) {
-      this.characters.push({
-        id: faker.datatype.uuid(),
-        image: faker.image.image(),
-        name: faker.name.findName(),
-      });
-    }
-  }
-
   async create(data) {
-    const newCharacter = {
-      id: faker.datatype.uuid(),
-      ...data,
-    };
-    this.characters.push(newCharacter);
+    // const newCharacter = {
+    //   id: faker.datatype.uuid(),
+    //   ...data,
+    // };
+    // const newCharacter = { ...data };
+    const newCharacter = await models.Character.create(newCharacter);
     return newCharacter;
   }
 

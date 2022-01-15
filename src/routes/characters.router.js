@@ -10,6 +10,7 @@ const {
 
 const serviceCharacters = new CharactersService();
 
+// Get all characters
 router.get("/", async (req, res) => {
   try {
     const characters = await serviceCharacters.find();
@@ -19,6 +20,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Get one character
 router.get(
   "/:id",
   validatorHandler(getCharacterSchema, "params"),
@@ -33,6 +35,7 @@ router.get(
   }
 );
 
+// Create a character
 router.post(
   "/",
   validatorHandler(createCharacterSchema, "body"),
@@ -43,6 +46,7 @@ router.post(
   }
 );
 
+// Update a character
 router.patch(
   "/:id",
   validatorHandler(updateCharacterSchema, "params"),
@@ -59,12 +63,14 @@ router.patch(
   }
 );
 
+// Delete a character
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   const character = await serviceCharacters.delete(id);
   res.json(character);
 });
 
+// Search a character
 router.get("/search", (req, res) => {
   res.send("Searching character...");
 });
