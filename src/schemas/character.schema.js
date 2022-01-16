@@ -1,5 +1,6 @@
 const Joi = require("joi");
-const id = Joi.string().uuid();
+// const id = Joi.string().uuid();
+const id = Joi.number().integer();
 const name = Joi.string().alphanum().min(3).max(10);
 const image = Joi.string().uri();
 const age = Joi.number().min(1);
@@ -20,7 +21,9 @@ const createCharacterSchema = Joi.object({
 // Schema for update character
 const updateCharacterSchema = Joi.object({
   name: name,
-  image: image,
+  age: age,
+  // image: image,
+  // id: id.required(),
 });
 
 // Schema for get a character

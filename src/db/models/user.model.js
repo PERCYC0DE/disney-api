@@ -17,6 +17,11 @@ const UserSchema = {
     allowNull: false,
     type: DataTypes.STRING,
   },
+  role: {
+    allowNull: false,
+    type: DataTypes.STRING,
+    defaultValue: "invited",
+  },
 };
 
 class User extends Model {

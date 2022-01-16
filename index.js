@@ -9,10 +9,13 @@ const {
   logErrors,
   errorHandler,
   boomErrorHandler,
+  ormErrorHandler,
 } = require("./src/middlewares/error.handler");
+
+// Middlewares
 app.use(express.json());
 
-// CORS
+// Cors
 const whiteList = ["http://localhost:8080", "https://ppjcode.com"];
 const options = {
   origin: (origin, callback) => {
@@ -30,7 +33,9 @@ routerApi(app);
 
 // Middleware Handler Error
 app.use(logErrors);
+app.use(ormErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 
+// Run application
 app.listen(port, () => console.log(`Running in port ${port}`));

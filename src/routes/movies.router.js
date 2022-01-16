@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-// GET ALL MOVIES
+// Get all movies
 router.get("/", async (req, res) => {
   try {
     // Show only image, title and createdDate
