@@ -6,6 +6,7 @@
 
 postgres_data
 database
+backup-files
 # Icon must end with two \r
 Icon
 

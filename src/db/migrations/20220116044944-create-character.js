@@ -11,6 +11,6 @@ module.exports = {
 
   // Revert
   async down(queryInterface) {
-    await queryInterface.drop(CHARACTER_TABLE);
+    await queryInterface.dropTable(CHARACTER_TABLE);
   },
 };

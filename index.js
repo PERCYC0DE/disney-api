@@ -38,4 +38,4 @@ app.use(boomErrorHandler);
 app.use(errorHandler);
 
 // Run application
-app.listen(port, () => console.log(`Running in port ${port}`));
+app.listen(port, () => console.log(`Server running in port ${port}`));

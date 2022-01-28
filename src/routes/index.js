@@ -1,12 +1,12 @@
 const express = require("express");
 
-// Routes
+//=== Import routes
 const charactersRouter = require("./characters.router");
 const moviesRouter = require("./movies.router");
 const usersRouter = require("./users.router");
 const genderRouter = require("./gender.router");
 
-// Function for dynamics routes
+//=== Function for dynamics routes
 function routerApi(app) {
   const router = express.Router();
   app.use("/api/v1", router);

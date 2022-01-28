@@ -4,10 +4,10 @@ const CHARACTER_TABLE = "characters";
 
 const CharacterSchema = {
   id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
     allowNull: false,
     autoIncrement: true,
-    primaryKey: true,
-    type: DataTypes.INTEGER,
   },
   image: {
     allowNull: false,

@@ -1,13 +1,13 @@
 const { Model, DataTypes, Sequelize } = require("sequelize");
 
-const GENDER_MODEL = "genders";
+const GENDER_TABLE = "genders";
 
 const GenderSchema = {
   id: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
   },
   name: {
     allowNull: false,
@@ -27,7 +27,7 @@ class Gender extends Model {
   static config(sequelize) {
     return {
       sequelize,
-      tableName: GENDER_MODEL,
+      tableName: GENDER_TABLE,
       modelName: "Gender",
       timestamps: false,
     };
@@ -35,7 +35,7 @@ class Gender extends Model {
 }
 
 module.exports = {
-  GENDER_MODEL,
+  GENDER_TABLE,
   GenderSchema,
   Gender,
 };

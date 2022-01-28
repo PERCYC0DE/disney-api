@@ -14,6 +14,7 @@ const serviceCharacters = new CharactersService();
 router.get("/", async (req, res) => {
   try {
     const characters = await serviceCharacters.find();
+    // const [name, image] = characters[0].dataValues;
     res.json(characters);
   } catch (error) {
     console.log(error);
@@ -30,19 +31,24 @@ router.get(
       const character = await serviceCharacters.findOne(id);
       res.json(character);
     } catch (error) {
+      //TODO: Configure message in error response
       next(error);
     }
   }
 );
 
-// Create a character
+// Create a new character
 router.post(
   "/",
   validatorHandler(createCharacterSchema, "body"),
-  async (req, res) => {
-    const body = req.body;
-    const newCharacter = await serviceCharacters.create(body);
-    res.status(201).json(newCharacter);
+  async (req, res, next) => {
+    try {
+      const body = req.body;
+      const newCharacter = await serviceCharacters.create(body);
+      res.status(201).json(newCharacter);
+    } catch (error) {
+      next(error);
+    }
   }
 );
 
@@ -50,7 +56,7 @@ router.post(
 router.patch(
   "/:id",
   // validatorHandler(updateCharacterSchema, "params"),
-  validatorHandler(updateCharacterSchema, "body"),
+  // validatorHandler(updateCharacterSchema, "body"),
   async (req, res, next) => {
     try {
       const { id } = req.params;
@@ -64,17 +70,21 @@ router.patch(
 );
 
 // Delete a character
-router.delete("/:id", async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const character = await serviceCharacters.delete(id);
-    res.json(character);
-  } catch (error) {
-    next(error);
+router.delete(
+  "/:id",
+  validatorHandler(getCharacterSchema, "params"),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const character = await serviceCharacters.delete(id);
+      res.json(character);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
-// Search a character
+//=== Search a character
 router.get("/search", (req, res) => {
   res.send("Searching character...");
 });

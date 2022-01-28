@@ -1,47 +1,71 @@
 const express = require("express");
 const router = express.Router();
+const MoviesService = require("../services/movies.service");
 
-// Get all movies
-router.get("/", async (req, res) => {
+const serviceMovies = new MoviesService();
+
+//=== Get all movies
+router.get("/", async (req, res, next) => {
   try {
     // Show only image, title and createdDate
-    res.send("All movies");
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-router.get("/:idMovie", async (req, res, next) => {
-  try {
-    const { idMovie } = req.params;
-    res.status(200).json(idMovie);
+    const movies = await serviceMovies.find();
+    res.json(movies);
   } catch (error) {
     next(error);
   }
 });
 
-router.post("/", async (req, res) => {
+//=== Get one movie
+router.get("/:idMovie", async (req, res, next) => {
   try {
-    res.status(201).json(req.body);
-  } catch (error) {
-    console.log(error);
+    const { idMovie } = req.params;
+    const movie = await serviceMovies.findOne(idMovie);
+    res.status(200).json(movie);
+  } catch (err) {
+    next(err);
   }
 });
 
-router.patch("/:idMovie", (req, res) => {
-  const { idMovie } = req.params;
-  const updatedData = req.body;
-  res.status(201).json(idMovie);
+//=== Create a movie
+router.post("/", async (req, res, next) => {
+  try {
+    const body = req.body;
+    const newMovie = await serviceMovies.create(body);
+    res.status(201).json(newMovie);
+  } catch (error) {
+    next(error);
+  }
 });
 
-router.delete("/:idMovie", (req, res) => {
-  const { idMovie } = req.params;
-  res.status(200).json({
-    message: `The movie ${idMovie} has deleted`,
-  });
+//=== Update a movie
+router.patch("/:idMovie", async (req, res, next) => {
+  try {
+    const { idMovie } = req.params;
+    const updatedData = req.body;
+    const movieUpdated = await serviceMovies.update(idMovie, updatedData);
+    res.status(201).json(movieUpdated);
+  } catch (error) {
+    next(error);
+  }
 });
 
+//=== Delete a movie
+router.delete("/:idMovie", async (req, res, next) => {
+  try {
+    const { idMovie } = req.params;
+    const movie = await serviceMovies.delete(idMovie);
+    res.status(200).json({
+      message: `The movie ${idMovie} has deleted`,
+    });
+  } catch (err) {
+    //TODO: Implement handler for errors
+    next(err);
+  }
+});
+
+//=== Search a movie
 router.get("/search", (req, res) => {
   res.send("Searching a movie...");
 });
+
 module.exports = router;

@@ -6,15 +6,15 @@ const { models } = require("../libs/sequelize");
 
 class CharactersService {
   constructor() {
-    this.characters = [];
+    // this.characters = [];
     // this.generate();
     // this.pool = pool;
     // this.pool.on("error", (err) => console.log(err));
   }
 
-  async create(data) {
-    const newCharacter = await models.Character.create(newCharacter);
-    return newCharacter;
+  async create(newCharacter) {
+    const characterCreated = await models.Character.create(newCharacter);
+    return characterCreated;
   }
 
   async find() {
@@ -25,15 +25,17 @@ class CharactersService {
   async findOne(id) {
     const characterFound = await models.Character.findByPk(id);
     if (!characterFound) {
-      throw boom.notFound("Character Not Found");
+      throw boom.notFound(
+        "Ups! Character not found! Please try another character."
+      );
     }
     return characterFound;
   }
 
   async update(id, dataToChange) {
     const characterFound = await this.findOne(id);
-    const response = await characterFound.update(dataToChange);
-    return response;
+    const result = await characterFound.update(dataToChange);
+    return result;
   }
 
   async delete(id) {
